@@ -1,11 +1,11 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Numeric, Table
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from database import Base
 
 
 class Author(Base):
-    __tablename__ = 'authors'
+    __tablename__ = "authors"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, index=True)
@@ -15,9 +15,12 @@ class Author(Base):
 
     courses = relationship("Course", back_populates="author")
 
+    def __repr__(self):
+        return f"Author: id = {self.id}, name = {self.name}"
+
 
 class Course(Base):
-    __tablename__ = 'courses'
+    __tablename__ = "courses"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
@@ -32,9 +35,12 @@ class Course(Base):
 
     modules = relationship("Module", back_populates="course")
 
+    def __repr__(self):
+        return f"Course #{self.id} | {self.title}"
+
 
 class Module(Base):
-    __tablename__ = 'modules'
+    __tablename__ = "modules"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
@@ -49,9 +55,12 @@ class Module(Base):
 
     lessons = relationship("Lesson", back_populates="module")
 
+    def __repr__(self):
+        return f"Module #{self.id} | {self.title} | Course {self.course.title}"
+
 
 class Lesson(Base):
-    __tablename__ = 'lessons'
+    __tablename__ = "lessons"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
@@ -63,6 +72,9 @@ class Lesson(Base):
 
     module = relationship("Module", back_populates="lessons")
 
+    def __repr__(self):
+        return f"Lesson #{self.id} | {self.title} | Module {self.module.title} | Course {self.module.course.title}"
+
 
 class User(Base):
     __tablename__ = "users"
@@ -72,9 +84,13 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
 
+    def __repr__(self):
+        return f"User {self.name}"
 
-user_course = Table('user_course', Base.metadate,
-                    Column("user_id", ForeignKey("users.id"), primary_key=True),
-                    Column("course_id", ForeignKey("courses.id"), primary_key=True),
-                    )
 
+user_course = Table(
+    "user_course",
+    Base.metadata,
+    Column("user_id", ForeignKey("users.id"), primary_key=True),
+    Column("course_id", ForeignKey("courses.id"), primary_key=True),
+)
