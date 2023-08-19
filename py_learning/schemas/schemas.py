@@ -3,20 +3,42 @@ from typing import Optional
 from decimal import Decimal
 
 
+
 class PersonBase(BaseModel):
     name: str
     email: str
     password: str
 
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "name": "john",
+                    "email": "johndoe@gmail.com",
+                    "password": "password",
+                }
+            ]
+        }
+    }
 
-class SchemaAuthor(BaseModel):
-    class Config:
-        orm_mode = True
 
+class Admin(PersonBase):
+    is_admin: bool = False
+    superpassword: str
 
-class SchemaUser(PersonBase):
-    class Config:
-        orm_mode = True
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "name": "john",
+                    "email": "johndoe@gmail.com",
+                    "password": "password",
+                    "is_admin": False,
+                    "superpassword": "test"
+                }
+            ]
+        }
+    }
 
 
 class BaseCourse(BaseModel):

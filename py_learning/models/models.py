@@ -8,10 +8,9 @@ class Author(Base):
     __tablename__ = "authors"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
+    name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    author = Column(Boolean, default=True)
 
     courses = relationship("Course", back_populates="author")
 
@@ -47,8 +46,7 @@ class Module(Base):
     slug = Column(String, index=True)
     description = Column(String)
     difficulty = Column(Integer, default=1)
-    is_active = Column(Boolean, default=False)
-    is_passed = Column(Boolean, default=False)
+    is_active = Column(Boolean, default=True)
     course_id = Column(Integer, ForeignKey("courses.id"))
 
     course = relationship("Course", back_populates="modules")
@@ -83,6 +81,7 @@ class User(Base):
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+    is_admin = Column(Boolean, default=False)
 
     def __repr__(self):
         return f"User {self.name}"
@@ -93,4 +92,5 @@ user_course = Table(
     Base.metadata,
     Column("user_id", ForeignKey("users.id"), primary_key=True),
     Column("course_id", ForeignKey("courses.id"), primary_key=True),
+    Column("is_passed", Boolean, default=False)
 )
