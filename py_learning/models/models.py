@@ -12,7 +12,7 @@ class Author(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
 
-    courses = relationship("Course", back_populates="author")
+    courses = relationship("Course", back_populates="author", cascade="all, delete")
 
     def __repr__(self):
         return f"Author: id = {self.id}, name = {self.name}"
@@ -32,7 +32,7 @@ class Course(Base):
 
     author = relationship("Author", back_populates="courses")
 
-    modules = relationship("Module", back_populates="course")
+    modules = relationship("Module", back_populates="course", cascade="all, delete")
 
     def __repr__(self):
         return f"Course #{self.id} | {self.title}"
@@ -51,7 +51,7 @@ class Module(Base):
 
     course = relationship("Course", back_populates="modules")
 
-    lessons = relationship("Lesson", back_populates="module")
+    lessons = relationship("Lesson", back_populates="module", cascade="all, delete")
 
     def __repr__(self):
         return f"Module #{self.id} | {self.title} | Course {self.course.title}"

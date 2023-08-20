@@ -1,3 +1,4 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from fastapi import APIRouter, status, Depends, HTTPException, Request
 from sqlalchemy.orm.exc import NoResultFound
 from fastapi.encoders import jsonable_encoder
@@ -7,6 +8,8 @@ from database import SessionLocal, engine
 
 from models import models
 from schemas import schemas
+
+from .make_order import create_payment
 
 users_router = APIRouter(
     prefix='/users',
@@ -51,7 +54,12 @@ async def buy_course(user_id: int, course_id: int):
 
     course = session.query(models.Course).filter(models.Course.id == course_id).first()
 
-    # buying course
+    # if course.price > 0:
+    #     payment_result = create_payment(amount=course.price)
+    #     client_secret = payment_result["client_secret"]
+    #
+    #     return {"message": "Payment required", "client_secret": client_secret}
+
     new_course = models.user_course.insert().values(
         user_id=user_id,
         course_id=course_id
@@ -61,6 +69,7 @@ async def buy_course(user_id: int, course_id: int):
     session.commit()
 
     return {"message": "Course has been bought successfully"}
+
 
 
 @users_router.patch("/course/{course_id}/passed/")
@@ -98,3 +107,22 @@ async def user_delete_course(user_id: int, course_id: int):
             return {"message": "Course has been deleted"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Server error '{e}'")
+
+
+@users_router.delete("/self-delete/")
+async def self_delete(user_id: int, email: str, password: str):
+    user = session.query(models.User).filter(
+        models.User.id == user_id
+    ).filter(
+        models.User.email == email
+    ).first()
+
+    if user:
+        if check_password_hash(user.hashed_password, generate_password_hash(password)):
+            session.delete(user)
+            session.commit()
+            return {"message": "User has been deleted"}
+        else:
+            raise HTTPException(status_code=403, detail="Have no permission")
+    else:
+        raise HTTPException(status_code=400, detail="No user found")

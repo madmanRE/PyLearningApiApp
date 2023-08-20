@@ -29,6 +29,10 @@
 | *POST*   | Users   | ```/users/user/{user_id}/buy/```            | _Buy course_                  | _The user_           |
 | *PATCH*  | Users   | ```/users/course/{coure_id}/passed/```      | _Make course passed_          | _The user_           |
 | *DELETE* | Users   | ```/users/course/delete/```                 | _Delete course from user_     | _The user_           |
+| *DELETE* | Users   | ```/users/self-delete/```                   | _Self delete_                 | _The user_           |
+| *DELETE* | Admin   | ```/admin/del/course/```                    | _Delete course_               | _Admin_              |
+| *DELETE* | Admin   | ```/admin/del/user/```                      | _Delete user_                 | _Admin_              |
+| *DELETE* | Admin   | ```/admin/del/author/```                    | _Delete author_               | _Admin_              |
 
 ### Backend
 
@@ -40,13 +44,20 @@
 │   ├── database.py
 │   ├── config.py
 │   ├── init_db.py
-│   ├── tests.py
 │   └── models
 │   │   ├── __init__.py
 │   │   └── models.py
+│   └── tests
+│   │   ├── __init__.py
+│   │   ├── author_tests.py
+│   │   ├── courses_tests.py
+│   │   ├── user_tests.py
+│   │   └── auth_tests.py
 │   └── routers
 │   │   ├── __init__.py
+│   │   ├── make_order.py
 │   │   ├── auth_routers.py
+│   │   ├── admin_routers.py
 │   │   ├── author_routers.py
 │   │   ├── users_routers.py
 │   │   └── courses_routers.py
@@ -57,11 +68,5 @@
 
 ### Installation
 
-//TODO: make crud for users (many_to_many tables)
-
-tasks
-rabbitmq
-smtp
-authorize
 
 
