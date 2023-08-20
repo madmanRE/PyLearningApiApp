@@ -50,13 +50,6 @@
 │   └── tasks
 │   │   ├── __init__.py
 │   │   └── tasks.py
-│   └── tests
-│   │   ├── __init__.py
-│   │   ├── test_db.py
-│   │   ├── author_tests.py
-│   │   ├── courses_tests.py
-│   │   ├── user_tests.py
-│   │   └── auth_tests.py
 │   └── routers
 │   │   ├── __init__.py
 │   │   ├── make_order.py

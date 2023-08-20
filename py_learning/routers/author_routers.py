@@ -57,8 +57,9 @@ async def update_course(course: schemas.SchemaCourse, course_id: int):
 
 
 @author_router.delete("/delete/course/")
-async def delete_course(course_id: int):
-    course_for_delete = session.query(models.Course).filter(models.Course.id == course_id).first()
+async def delete_course(course_id: int, user_id: int):
+    course_for_delete = session.query(models.Course).filter(models.Course.id == course_id).filter(
+        models.Course.author_id == user_id).first()
 
     if course_for_delete is not None:
 
