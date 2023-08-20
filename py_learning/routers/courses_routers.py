@@ -2,6 +2,8 @@ from fastapi import APIRouter, status, Depends, HTTPException, Request
 from sqlalchemy.orm.exc import NoResultFound
 from fastapi.encoders import jsonable_encoder
 
+from fastapi_cache.decorator import cache
+
 from database import SessionLocal, engine
 
 from models import models
@@ -16,11 +18,13 @@ session = SessionLocal(bind=engine)
 
 
 @courses_router.get("/")
+@cache(expire=180)
 async def get_all_courses():
     return jsonable_encoder(session.query(models.Course).all())
 
 
 @courses_router.get("/{author_id}/")
+@cache(expire=180)
 async def get_all_courses_by_author(author_id: int):
     courses = session.query(models.Course).filter(models.Course.author_id == author_id).all()
     if courses:
@@ -30,6 +34,7 @@ async def get_all_courses_by_author(author_id: int):
 
 
 @courses_router.get("/detail/course/{course_id}/")
+@cache(expire=180)
 async def get_course_detail(course_id: int):
     try:
         course = session.query(models.Course).filter(models.Course.id == course_id).first()
@@ -72,6 +77,7 @@ async def get_course_detail(course_id: int):
 
 
 @courses_router.get("/{course_id}/modules/")
+@cache(expire=180)
 async def get_all_modules(course_id: int):
     modules = session.query(models.Module).filter(models.Module.course_id == course_id).all()
     if modules:
@@ -81,6 +87,7 @@ async def get_all_modules(course_id: int):
 
 
 @courses_router.get("/detail/module/{module_id}/")
+@cache(expire=180)
 async def get_module_detail(module_id: int):
     try:
         module = session.query(models.Module).filter(models.Module.id == module_id).first()
@@ -113,6 +120,7 @@ async def get_module_detail(module_id: int):
 
 
 @courses_router.get("/{module_id}/lessons")
+@cache(expire=180)
 async def get_all_lessons(module_id: int):
     lessons = session.query(models.Lesson).filter(models.Lesson.module_id == module_id).all()
     if lessons:

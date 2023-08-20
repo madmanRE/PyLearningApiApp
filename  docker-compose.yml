@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./py_learning:/app/py_learning
+    links:
+      - redis
+      - postgres
+
+  redis:
+    image: "redis:latest"
+    container_name: "redis"
+
+  postgres:
+    image: "postgres:latest"
+    container_name: "postgres"
+    environment:
+      POSTGRES_DB: "pylearning"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "admin"
