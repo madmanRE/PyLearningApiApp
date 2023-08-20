@@ -10,6 +10,8 @@ from database import SessionLocal, engine
 from models import models
 from schemas import schemas
 
+from tasks import tasks
+
 author_router = APIRouter(
     prefix='/author',
     tags=['Author'],
@@ -27,8 +29,12 @@ async def create_course(course: schemas.SchemaCourse):
         author_id=course.author_id,
     )
 
+    author = session.query(models.Author).filter(models.Author.id == new_course.author_id).first()
+
     session.add(new_course)
     session.commit()
+
+    tasks.send_email_report.delay(author.name, author.email)
 
     return {"message": f"Course {new_course.title} has been created"}
 

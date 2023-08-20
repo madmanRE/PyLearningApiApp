@@ -8,7 +8,7 @@
 |----------|---------|---------------------------------------------|-------------------------------|----------------------|
 | *POST*   | Auth    | ```/auth/signup/authors/```                 | _Register new user_           | _All users_          |
 | *POST*   | Auth    | ```/auth/signup/users/```                   | _Register new user_           | _All users_          |
-| *POST*   | Auth    | ```/auth/signup/admins/```                  | _Register new user_           | _Need PUSERPASSWORD_ |
+| *POST*   | Auth    | ```/auth/signup/admins/```                  | _Register new user_           | _Need SUPERPASSWORD_ |
 | *POST*   | Author  | ```/author/create/course/```                | _Create new course_           | _Author_             |
 | *Patch*  | Author  | ```/author/update/course/{course_id}/```    | _Update course_               | _Author_             |
 | *Delete* | Author  | ```/author/delete/course/```                | _Delete course_               | _Author_             |
@@ -47,8 +47,12 @@
 │   └── models
 │   │   ├── __init__.py
 │   │   └── models.py
+│   └── tasks
+│   │   ├── __init__.py
+│   │   └── tasks.py
 │   └── tests
 │   │   ├── __init__.py
+│   │   ├── test_db.py
 │   │   ├── author_tests.py
 │   │   ├── courses_tests.py
 │   │   ├── user_tests.py
