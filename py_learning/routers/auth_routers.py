@@ -55,19 +55,19 @@ async def create_user(user: schemas.PersonBase):
 
 
 @auth_router.post("/signup/admins/")
-async def create_admin(user: schemas.Admin):
-    user_email = session.query(models.User).filter(models.User.email == user.email).first()
+async def create_admin(admin: schemas.Admin):
+    admin_email = session.query(models.Admin).filter(models.Admin.email == admin.email).first()
 
-    if user_email is not None:
+    if admin_email is not None:
         raise HTTPException(status_code=400, detail="Invalid data (email is not unique)")
 
-    superpassword = user.superpassword
+    superpassword = admin.superpassword
 
     if superpassword == SUPERPASSWORD:
-        new_admin = models.User(
-            name=user.name,
-            email=user.email,
-            hashed_password=generate_password_hash(user.password),
+        new_admin = models.Admin(
+            name=admin.name,
+            email=admin.email,
+            hashed_password=generate_password_hash(admin.password),
             is_admin=True,
         )
         session.add(new_admin)

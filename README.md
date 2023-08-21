@@ -30,9 +30,9 @@
 | *PATCH*  | Users   | ```/users/course/{coure_id}/passed/```      | _Make course passed_          | _The user_           |
 | *DELETE* | Users   | ```/users/course/delete/```                 | _Delete course from user_     | _The user_           |
 | *DELETE* | Users   | ```/users/self-delete/```                   | _Self delete_                 | _The user_           |
-| *DELETE* | Admin   | ```/admin/del/course/```                    | _Delete course_               | _Admin_              |
-| *DELETE* | Admin   | ```/admin/del/user/```                      | _Delete user_                 | _Admin_              |
-| *DELETE* | Admin   | ```/admin/del/author/```                    | _Delete author_               | _Admin_              |
+| *GET*    | docs    | ```/docs/```                                | _Documentation_               | _All users_          |
+| *GET*    | docs    | ```/redoc/```                               | _Documentation_               | _All users_          |
+| *GET*    | admin   | ```/admin/```                               | _Admin panel_                 | _Admins only_        |
 
 ### Backend
 
@@ -63,7 +63,6 @@
 │       └── schemas.py
 ```
 
-### Installation
 
 
 

@@ -1,5 +1,6 @@
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Numeric, Table
 from sqlalchemy.orm import relationship
+from slugify import slugify
 
 from database import Base
 
@@ -81,10 +82,22 @@ class User(Base):
     name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    is_admin = Column(Boolean, default=False)
 
     def __repr__(self):
         return f"User {self.name}"
+
+
+class Admin(Base):
+    __tablename__ = "admins"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    email = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    is_admin = True
+
+    def __repr__(self):
+        return f"Admin {self.name}"
 
 
 user_course = Table(
